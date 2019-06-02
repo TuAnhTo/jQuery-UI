@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>jQuery UI</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<body>
+<div id="dialog" title="Basic dialog">
+    <p>This is the demo of jQuery UIs. This is also a dialog!</p>
+</div>
+
+<div id="accordion">
+    <h3>Draggable & Dropable</h3>
+    <div>
+        <div id="draggable">Drag me</div>
+        <div id="droppable">Drop here</div>
+    </div>
+    <h3>Selectable</h3>
+    <div>
+        <ul id="selectable">
+            <li>Select</li>
+            <li>Items</li>
+            <li>From</li>
+            <li>This</li>
+            <li>List</li>
+        </ul>
+    </div>
+    <h3>Sortable</h3>
+    <div>
+        <ol id="sortable">
+            <li>From</li>
+            <li>This</li>
+            <li>List</li>
+            <li>Re-arrange</li>
+            <li>Items</li>
+        </ol>
+    </div>
+    <h3>Autocomplete</h3>
+    <div>
+        <label for="autocomplete">Type in to select a programming language: </label>
+        <input id="autocomplete">
+    </div>
+    <h3>DatePicker</h3>
+    <div>
+        <label for="datepicker">Select a date: </label>
+        <input id="datepicker">
+    </div>
+    <h3>Slider</h3>
+    <div>
+        <div id="slider"></div>
+    </div>
+    <h3>Progress bar</h3>
+    <div>
+        <div id="progressbar"></div>
+    </div>
+    <h3>Spinner</h3>
+    <div>
+        <p>
+            <label for="spinner">Select a value:</label>
+            <input id="spinner" name="value">
+        </p>
+
+        <p>
+            <button id="disable">Toggle disable/enable</button>
+            <button id="destroy">Toggle widget</button>
+        </p>
+
+        <p>
+            <button id="getvalue">Get value</button>
+            <button id="setvalue">Set value to 100</button>
+        </p>
+    </div>
+    <h3>Tabs</h3>
+    <div>
+        <div id="tabs">
+            <ul>
+                <li><a href="#tabs-1">Add Class & Remove Class</a></li>
+                <li><a href="#tabs-2">End</a></li>
+            </ul>
+            <div id="tabs-1">
+                <div class="toggler">
+                    <div id="effect" class="ui-corner-all">
+                        Etiam libero neque, luctus a, eleifend nec, semper at, lorem. Sed pede.
+                    </div>
+                    <select name="effects" id="effectTypes">
+                        <option value="blind">Blind</option>
+                        <option value="bounce">Bounce</option>
+                        <option value="clip">Clip</option>
+                        <option value="drop">Drop</option>
+                        <option value="explode">Explode</option>
+                        <option value="fade">Fade</option>
+                        <option value="fold">Fold</option>
+                        <option value="highlight">Highlight</option>
+                        <option value="puff">Puff</option>
+                        <option value="pulsate">Pulsate</option>
+                        <option value="scale">Scale</option>
+                        <option value="shake">Shake</option>
+                        <option value="size">Size</option>
+                        <option value="slide">Slide</option>
+                        <option value="transfer">Transfer</option>
+                    </select>
+                </div>
+
+                <button id="button" class="ui-state-default ui-corner-all">Run Effect</button>
+            </div>
+            <div id="tabs-2">
+                <p>Nothing!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $( "#draggable" ).draggable();
+    $( "#droppable" ).droppable({
+        drop: function() {
+            alert( "dropped" );
+        }
+    });
+    $( "#draggable" ).resizable();
+    $( "#droppable" ).resizable();
+    $( "#selectable" ).selectable();
+    $( "#sortable" ).sortable();
+    $( "#accordion" ).accordion();
+    $( "#autocomplete" ).autocomplete({
+        source: [ "c++", "java", "php", "coldfusion", "javascript", "asp", "ruby" ]
+    });
+    $( "#datepicker" ).datepicker();
+    $( "#dialog" ).dialog();
+    $( "#slider" ).slider();
+    $( "#progressbar" ).progressbar({
+        value: 90
+    });
+    var spinner = $( "#spinner" ).spinner();
+    $( "#disable" ).on( "click", function() {
+        if ( spinner.spinner( "option", "disabled" ) ) {
+            spinner.spinner( "enable" );
+        } else {
+            spinner.spinner( "disable" );
+        }
+    });
+    $( "#destroy" ).on( "click", function() {
+        if ( spinner.spinner( "instance" ) ) {
+            spinner.spinner( "destroy" );
+        } else {
+            spinner.spinner();
+        }
+    });
+    $( "#getvalue" ).on( "click", function() {
+        alert( spinner.spinner( "value" ) );
+    });
+    $( "#setvalue" ).on( "click", function() {
+        spinner.spinner( "value", 100 );
+    });
+
+    $( "button" ).button();
+    $( "#tabs" ).tabs();
+    $( function() {
+        // run the currently selected effect
+        function runEffect() {
+            // get effect type from
+            var selectedEffect = $( "#effectTypes" ).val();
+
+            // Most effect types need no options passed by default
+            var options = {};
+            // some effects have required parameters
+            if ( selectedEffect === "scale" ) {
+                options = { percent: 50 };
+            } else if ( selectedEffect === "transfer" ) {
+                options = { to: "#button", className: "ui-effects-transfer" };
+            } else if ( selectedEffect === "size" ) {
+                options = { to: { width: 200, height: 60 } };
+            }
+
+            // Run the effect
+            $( "#effect" ).effect( selectedEffect, options, 500, callback );
+        };
+
+        // Callback function to bring a hidden box back
+        function callback() {
+            setTimeout(function() {
+                $( "#effect" ).removeAttr( "style" ).hide().fadeIn();
+            }, 1000 );
+        };
+
+        // Set effect from select menu value
+        $( "#button" ).on( "click", function() {
+            runEffect();
+            return false;
+        });
+    } );
+</script>
+</body>
+</html>
